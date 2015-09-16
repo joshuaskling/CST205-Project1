@@ -8,15 +8,16 @@ width = 0
 #path = "C:\\Users\\Josh\\Documents\\Fall 2015\\CST 205 - Multimedia Programming\\Project1\\"
 path = ""
 
+#this function defines individual pixels
 def makePixel(pixel, selector):
 
-  #change selection
+  #select median
   if (selector == 1):
 
     i = 0
     channelList = []
   
-    
+    #loop through images and find all
     while (i < imgNum):
        #print getX(pixel)
        #print getY(pixel)
@@ -26,14 +27,14 @@ def makePixel(pixel, selector):
   
     #sort list
     channelList.sort()
-  
-  
+
     #get median
     medianNum = channelList[imgNum/2][1]
     
     #return pixel color
     return getColor(getPixel(imgList[medianNum], getX(pixel), getY(pixel)))
     
+  #select mean
   elif (selector == 2):
     #get mean
     i = 0
@@ -41,6 +42,7 @@ def makePixel(pixel, selector):
     newGreen = 0
     newBlue = 0
     
+    #loop through images and get picels
     while (i < imgNum):
       curPix = getPixel(imgList[i], getX(pixel), getY(pixel))
       newRed = newRed + getRed(curPix)
@@ -53,8 +55,10 @@ def makePixel(pixel, selector):
     newGreen = newGreen/imgNum
     newBlue = newBlue/imgNum
     
+    #return new color
     return (makeColor(newRed, newGreen, newBlue))
 
+#function to create the new image
 def makeImage():
   startTime = time.time()
   
@@ -77,12 +81,14 @@ def makeImage():
   sys.stdout.write("[")
   sys.stdout.flush()
   
+  #create blank image
   finalImage = makeEmptyPicture(width, height)
   j = 0
   k = 0
   statusCheck = 0
   statusInt = height*.02
   
+  #set each pixel individually
   while (j < height):
     while (k < width):
       pixel = getPixel(finalImage, k, j)
@@ -91,6 +97,7 @@ def makeImage():
     k = 0
     j=j+1
     
+    #status bar creation
     if (j > statusCheck):
       sys.stdout.write("=")
       sys.stdout.flush()
@@ -106,23 +113,8 @@ def makeImage():
   global path
   finalPath = path+"\\finalImage.png"
   
-  #writePictureTo(finalImage, "C:\\Users\\Josh\\Documents\\Fall 2015\\CST 205 - Multimedia Programming\\Project1\\finalimage.png")
+  #write new image
   writePictureTo(finalImage, finalPath)
-
-#set image list to all 9 images
-def load():
-  i = 1
-
-  while (i <= imgNum):
-    file = "C:\\Users\\Josh\\Documents\\Fall 2015\\CST 205 - Multimedia Programming\\Project1\\" + str(i) + ".png"
-    imgList.append(makePicture(file))
-    i = i+1
-    
-  global height
-  global width
-    
-  height = getHeight(imgList[0])
-  width = getWidth(imgList[0])
 
 #load all of the files!
 def loadFiles():
@@ -132,6 +124,7 @@ def loadFiles():
   global width
   path = raw_input('Enter path to folder: ')
 
+  #open files
   for file in os.listdir(path):
     if (file.endswith(".jpg") or file.endswith(".png")):
       imgNum = imgNum+1
@@ -147,8 +140,7 @@ def loadFiles():
       height = getHeight(imgList[i])
     if (width > getWidth(imgList[i])):
       width = getWidth(imgList[i])
-    i = i+1
-      
+    i = i+1 
   
 #test image elements
 def test():
@@ -159,7 +151,6 @@ def test():
   print "Height: " + str(height)
 
 #run program
-#load()
 loadFiles()
 test()
 makeImage()
